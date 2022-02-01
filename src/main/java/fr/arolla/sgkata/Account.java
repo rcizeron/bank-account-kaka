@@ -19,7 +19,7 @@ public class Account {
     }
 
     public BigDecimal getBalance() {
-        return this.transactions.stream().map(Transaction::amount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return this.transactions.stream().map(Transaction::getSignedAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public List<Transaction> getTransactions() {
