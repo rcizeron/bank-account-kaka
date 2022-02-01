@@ -3,7 +3,7 @@ package fr.arolla.sgkata;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Account {
@@ -15,8 +15,12 @@ public class Account {
     }
 
     public Account(BigDecimal initialDeposit) {
+        this(initialDeposit, LocalDate.now());
+    }
+
+    public Account(BigDecimal initialDeposit, LocalDate date) {
         transactions = new ArrayList<>();
-        transactions.add(createTransaction(initialDeposit, Transaction.Type.DEPOSIT, LocalDate.now()));
+        transactions.add(createTransaction(initialDeposit, Transaction.Type.DEPOSIT, date));
     }
 
     public BigDecimal getBalance() {
@@ -24,7 +28,7 @@ public class Account {
     }
 
     public List<Transaction> getTransactions() {
-        return Collections.unmodifiableList(transactions);
+        return transactions.stream().sorted(Comparator.comparing(Transaction::date)).toList();
     }
 
     private Transaction createTransaction(BigDecimal amount, Transaction.Type type, LocalDate date) {
