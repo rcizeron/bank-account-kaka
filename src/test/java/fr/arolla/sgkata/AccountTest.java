@@ -19,4 +19,11 @@ public class AccountTest {
 
         assertThat(account.getBalance()).isEqualTo(BigDecimal.valueOf(100));
     }
+
+    @Test
+    void should_have_a_transaction_as_initial_deposit() {
+        Account account = new Account(new BigDecimal(100));
+
+        assertThat(account.getTransactions()).containsExactly(new Transaction(BigDecimal.valueOf(100)));
+    }
 }
