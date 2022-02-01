@@ -15,7 +15,7 @@ public class Account {
 
     public Account(BigDecimal initialDeposit) {
         transactions = new ArrayList<>();
-        transactions.add(new Transaction(initialDeposit));
+        transactions.add(createTransaction(initialDeposit, Transaction.Type.DEPOSIT));
     }
 
     public BigDecimal getBalance() {
@@ -26,17 +26,19 @@ public class Account {
         return Collections.unmodifiableList(transactions);
     }
 
-    public void depose(BigDecimal deposit) {
-        if (deposit.signum() == -1) {
-            throw new IllegalArgumentException("Deposit must be positive");
+    private Transaction createTransaction(BigDecimal amount, Transaction.Type type) {
+        if (amount.signum() == -1) {
+            throw new IllegalArgumentException("Amount must be positive");
         }
-        this.transactions.add(new Transaction(deposit));
+        return new Transaction(amount, type);
+    }
+
+    public void depose(BigDecimal deposit) {
+
+        this.transactions.add(createTransaction(deposit, Transaction.Type.DEPOSIT));
     }
 
     public void withdraw(BigDecimal withdraw) {
-        if (withdraw.signum() == -1) {
-            throw new IllegalArgumentException("withdraw amount must be positive");
-        }
-        this.transactions.add(new Transaction(withdraw.multiply(BigDecimal.valueOf(-1))));
+        this.transactions.add(createTransaction(withdraw, Transaction.Type.WITHDRAWAL));
     }
 }

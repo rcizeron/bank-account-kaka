@@ -25,7 +25,7 @@ public class AccountTest {
     void should_have_a_transaction_as_initial_deposit() {
         Account account = new Account(new BigDecimal(100));
 
-        assertThat(account.getTransactions()).containsExactly(new Transaction(BigDecimal.valueOf(100)));
+        assertThat(account.getTransactions()).containsExactly(new Transaction(BigDecimal.valueOf(100), Transaction.Type.DEPOSIT));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class AccountTest {
     void should_not_be_able_to_depose_negative_amount() {
         Account account = new Account(BigDecimal.valueOf(100));
 
-        assertThatThrownBy(() -> account.depose(BigDecimal.valueOf(-150))).isInstanceOf(IllegalArgumentException.class).hasMessage("Deposit must be positive");
+        assertThatThrownBy(() -> account.depose(BigDecimal.valueOf(-150))).isInstanceOf(IllegalArgumentException.class).hasMessage("Amount must be positive");
     }
 
     @Test
@@ -51,7 +51,7 @@ public class AccountTest {
         assertThat(account.getBalance()).isEqualTo(BigDecimal.valueOf(100).add(BigDecimal.valueOf(-150)));
 
         assertThat(account.getTransactions()).containsExactly(
-                new Transaction(BigDecimal.valueOf(100)),
-                new Transaction(BigDecimal.valueOf(-150)));
+                new Transaction(BigDecimal.valueOf(100), Transaction.Type.DEPOSIT),
+                new Transaction(BigDecimal.valueOf(150), Transaction.Type.WITHDRAWAL));
     }
 }
