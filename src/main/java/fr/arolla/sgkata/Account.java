@@ -27,6 +27,9 @@ public class Account {
     }
 
     public void depose(BigDecimal deposit) {
+        if (deposit.signum() == -1) {
+            throw new IllegalArgumentException("Deposit must be positive");
+        }
         this.transactions.add(new Transaction(deposit));
     }
 }
