@@ -1,8 +1,9 @@
 package fr.arolla.sgkata;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-public record Transaction(BigDecimal amount, Type type) {
+public record Transaction(BigDecimal amount, Type type, LocalDate date) {
     public enum Type {
 
         DEPOSIT(BigDecimal.ONE), WITHDRAWAL(BigDecimal.valueOf(-1));
