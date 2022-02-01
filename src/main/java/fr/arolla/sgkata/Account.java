@@ -25,4 +25,8 @@ public class Account {
     public List<Transaction> getTransactions() {
         return Collections.unmodifiableList(transactions);
     }
+
+    public void depose(BigDecimal deposit) {
+        this.transactions.add(new Transaction(deposit));
+    }
 }

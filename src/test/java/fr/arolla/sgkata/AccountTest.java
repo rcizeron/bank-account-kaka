@@ -34,4 +34,5 @@ public class AccountTest {
 
         assertThat(account.getBalance()).isEqualTo(BigDecimal.valueOf(100).add(BigDecimal.valueOf(150)));
     }
+    
 }
