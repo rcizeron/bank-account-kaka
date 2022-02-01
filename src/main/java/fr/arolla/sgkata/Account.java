@@ -32,4 +32,11 @@ public class Account {
         }
         this.transactions.add(new Transaction(deposit));
     }
+
+    public void withdraw(BigDecimal withdraw) {
+        if (withdraw.signum() == -1) {
+            throw new IllegalArgumentException("withdraw amount must be positive");
+        }
+        this.transactions.add(new Transaction(withdraw.multiply(BigDecimal.valueOf(-1))));
+    }
 }
