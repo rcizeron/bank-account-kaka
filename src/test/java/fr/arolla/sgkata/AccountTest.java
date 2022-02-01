@@ -26,4 +26,12 @@ public class AccountTest {
 
         assertThat(account.getTransactions()).containsExactly(new Transaction(BigDecimal.valueOf(100)));
     }
+
+    @Test
+    void should_have_correct_balance_after_deposit() {
+        Account account = new Account(BigDecimal.valueOf(100));
+        account.depose(BigDecimal.valueOf(150));
+
+        assertThat(account.getBalance()).isEqualTo(BigDecimal.valueOf(100).add(BigDecimal.valueOf(150)));
+    }
 }
