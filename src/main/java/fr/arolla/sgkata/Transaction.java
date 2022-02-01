@@ -18,4 +18,11 @@ public record Transaction(BigDecimal amount, Type type, LocalDate date) {
     public BigDecimal getSignedAmount() {
         return amount.multiply(this.type.multiplier);
     }
+
+    public static Transaction of(BigDecimal amount, Transaction.Type type, LocalDate date) {
+        if (amount.signum() == -1) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        return new Transaction(amount, type, date);
+    }
 }

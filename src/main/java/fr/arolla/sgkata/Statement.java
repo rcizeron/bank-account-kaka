@@ -2,20 +2,21 @@ package fr.arolla.sgkata;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public record Statement(Transaction.Type operation, LocalDate date, BigDecimal amount, BigDecimal balance) {
-    public static List<Statement> getStatements(Account account) {
-        List<Statement> statements = new ArrayList<>();
-        BigDecimal balance = BigDecimal.ZERO;
+    public static Statements getStatements(Account account) {
 
-        for (Transaction transaction :
-                account.getTransactions()) {
-            balance = balance.add(transaction.getSignedAmount());
-            statements.add(new Statement(transaction.type(), transaction.date(), transaction.amount(), balance));
-        }
+        return account.getTransactions().stream().collect(
+                Statements::new,
+                (accumulator, transaction) -> {
+                    BigDecimal currentBalance = accumulator.getCurrentBalance();
+                    accumulator.add(getStatementFromTransaction(currentBalance, transaction));
+                },
+                Statements::merge
+        );
+    }
 
-        return statements;
+    private static Statement getStatementFromTransaction(BigDecimal oldBalance, Transaction transaction) {
+        return new Statement(transaction.type(), transaction.date(), transaction.amount(), oldBalance.add(transaction.getSignedAmount()));
     }
 }
