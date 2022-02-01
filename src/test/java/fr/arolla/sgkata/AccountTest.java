@@ -1,11 +1,11 @@
 package fr.arolla.sgkata;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AccountTest {
 
@@ -41,6 +41,17 @@ public class AccountTest {
         Account account = new Account(BigDecimal.valueOf(100));
 
         assertThatThrownBy(() -> account.depose(BigDecimal.valueOf(-150))).isInstanceOf(IllegalArgumentException.class).hasMessage("Deposit must be positive");
+    }
 
+    @Test
+    void should_have_correct_balance_after_withdrawal() {
+        Account account = new Account(BigDecimal.valueOf(100));
+        account.withdraw(BigDecimal.valueOf(150));
+
+        assertThat(account.getBalance()).isEqualTo(BigDecimal.valueOf(100).add(BigDecimal.valueOf(-150)));
+
+        assertThat(account.getTransactions()).containsExactly(
+                new Transaction(BigDecimal.valueOf(100)),
+                new Transaction(BigDecimal.valueOf(-150)));
     }
 }
